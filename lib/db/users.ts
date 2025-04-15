@@ -104,6 +104,17 @@ export async function createUser(userData: Omit<User, "_id" | "created_at" | "up
       }
     }
 
+    // Ensure externalId is provided
+    if (!userData.externalId) {
+      throw new Error("externalId is required for user creation")
+    }
+
+    // Check if externalId is already in use
+    const existingExternalId = await collection.findOne({ externalId: userData.externalId })
+    if (existingExternalId) {
+      throw new Error(`externalId ${userData.externalId} is already in use`)
+    }
+
     const now = new Date()
     const newUser: User = {
       ...userData,
@@ -137,6 +148,14 @@ export async function updateUser(id: string, userData: Partial<User>) {
       const existingBadge = await getUserByBadge(userData.badge_number)
       if (existingBadge && existingBadge._id?.toString() !== id) {
         throw new Error("User with this badge number already exists")
+      }
+    }
+
+    // If externalId is being updated, check if it's already in use
+    if (userData.externalId) {
+      const existingExternalId = await collection.findOne({ externalId: userData.externalId })
+      if (existingExternalId && existingExternalId._id?.toString() !== id) {
+        throw new Error(`externalId ${userData.externalId} is already in use`)
       }
     }
 

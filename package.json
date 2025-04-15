@@ -73,7 +73,8 @@
     "fs": "latest",
     "path": "latest",
     "child_process": "latest",
-    "@auth/mongodb-adapter": "latest"
+    "@auth/mongodb-adapter": "latest",
+    "uuid": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

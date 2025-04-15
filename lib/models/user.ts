@@ -34,6 +34,9 @@ export interface User {
   // External identity fields
   external_accounts?: ExternalAccount[]
 
+  // External ID field - must be unique and non-null
+  externalId: string // Made non-optional
+
   group_membership?: string[]
   status: "active" | "locked" | "pending"
   created_at: Date

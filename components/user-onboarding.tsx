@@ -45,6 +45,7 @@ export function UserOnboarding({ user }: UserOnboardingProps) {
     setError(null)
 
     try {
+      // No client-side externalId generation - all handled on server
       const result = await completeUserOnboarding({
         userId: user.id,
         email: user.email,
