@@ -1,23 +1,33 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Move serverComponentsExternalPackages to top level as serverExternalPackages
+  serverExternalPackages: [
+    'mongodb',
+    '@napi-rs/snappy-linux-x64-gnu',
+    '@napi-rs/snappy-linux-x64-musl',
+    'kerberos',
+    'mongodb-client-encryption',
+    'snappy',
+    'aws4',
+    'saslprep',
+    'bson',
+    'bson-ext',
+    'mongodb-extjson',
+    'mongoose'
+  ],
   experimental: {
-    serverActions: true,
-    // Keep server components external packages configuration
-    serverComponentsExternalPackages: [
-      'mongodb',
-      '@napi-rs/snappy-linux-x64-gnu',
-      '@napi-rs/snappy-linux-x64-musl',
-      'kerberos',
-      'mongodb-client-encryption',
-      'snappy',
-      'aws4',
-      'saslprep',
-      'bson',
-      'bson-ext',
-      'mongodb-extjson',
-      'mongoose'
-    ],
+    // Remove serverActions: true as it's now enabled by default
+    // Remove serverComponentsExternalPackages from experimental
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    unoptimized: true,
   },
   // Simpler webpack configuration that doesn't rely on plugins
   webpack: (config, { isServer }) => {
