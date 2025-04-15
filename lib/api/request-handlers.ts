@@ -1,4 +1,4 @@
-import { type NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
 import { getRequestById, getRequestByRequestId, updateRequest, deleteRequest } from "@/lib/db/requests"
@@ -7,7 +7,7 @@ import { createErrorLog } from "@/lib/db/error-logs"
 import { ObjectId } from "mongodb"
 import { isValidObjectId } from "@/lib/utils"
 
-export async function handleGetRequest(request: NextRequest, id: string) {
+export async function handleGetRequest(request: Request, id: string) {
   try {
     // Check authentication
     const session = await getServerSession(authOptions)
@@ -60,7 +60,7 @@ export async function handleGetRequest(request: NextRequest, id: string) {
   }
 }
 
-export async function handlePutRequest(request: NextRequest, id: string) {
+export async function handlePutRequest(request: Request, id: string) {
   try {
     // Check authentication
     const session = await getServerSession(authOptions)
@@ -133,7 +133,7 @@ export async function handlePutRequest(request: NextRequest, id: string) {
   }
 }
 
-export async function handleDeleteRequest(request: NextRequest, id: string) {
+export async function handleDeleteRequest(request: Request, id: string) {
   try {
     // Check authentication
     const session = await getServerSession(authOptions)
