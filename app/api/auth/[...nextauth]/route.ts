@@ -6,7 +6,10 @@ import clientPromise from "@/lib/mongodb-server"
 
 // Define authOptions directly in this file
 export const authOptions: NextAuthOptions = {
-  adapter: MongoDBAdapter(clientPromise),
+  adapter: MongoDBAdapter(clientPromise, {
+    // Enable automatic account linking based on email
+    allowDangerousEmailAccountLinking: true,
+  }),
   providers: [
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID || "",
@@ -44,10 +47,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
-    async signIn({ user, account, profile, email, credentials }) {
-      // Always allow sign in - we'll handle account linking in the application
-      return true
-    },
+    // Removed the custom signIn callback as we're using allowDangerousEmailAccountLinking instead
   },
   pages: {
     signIn: "/login",

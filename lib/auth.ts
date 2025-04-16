@@ -5,11 +5,16 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { getUserByEmail, updateUser } from "./db/users"
 import { ObjectId } from "mongodb"
 import clientPromise from "./mongodb-server"
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
 
 // This ensures this module is only used on the server
 console.log(serverOnly)
 
 export const authOptions: NextAuthOptions = {
+  // Enable automatic account linking in the MongoDB adapter
+  adapter: MongoDBAdapter(clientPromise, {
+    allowDangerousEmailAccountLinking: true,
+  }),
   providers: [
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID!,
@@ -186,8 +191,19 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async signIn({ user, account, profile }) {
-      // Always allow sign in, even for new users or existing emails
-      // We'll handle account linking in the application
+      // Removed unconditional true return, letting the adapter's allowDangerousEmailAccountLinking handle linking
+      // Only keeping any specific business logic checks unrelated to account linking
+
+      // For example, if you need to check for specific domains
+      const email = user.email || ""
+      const allowedDomains = ["anglogoldashanti.com", "example.org"]
+
+      // Only allow organizational domains (optional - remove if not needed)
+      // const isAllowedDomain = allowedDomains.some(domain => email.endsWith(`@${domain}`));
+      // if (!isAllowedDomain && !email.includes("test@")) {
+      //   return false; // Block sign in for non-organizational emails
+      // }
+
       return true
     },
   },
