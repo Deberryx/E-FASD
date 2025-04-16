@@ -66,7 +66,7 @@ export default function LoginPage() {
   const getErrorMessage = (errorCode: string) => {
     switch (errorCode) {
       case "OAuthAccountNotLinked":
-        return "This email is already associated with another account. Please sign in using your original method."
+        return "This email is already associated with another account. Please sign in using your original method or contact an administrator for help."
       case "AccessDenied":
         return "Access denied. Please check your credentials or contact an administrator."
       case "CredentialsSignin":

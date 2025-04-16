@@ -186,8 +186,8 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async signIn({ user, account, profile }) {
-      // Always allow sign in, even for new users
-      // We'll handle onboarding in the application
+      // Always allow sign in, even for new users or existing emails
+      // We'll handle account linking in the application
       return true
     },
   },
